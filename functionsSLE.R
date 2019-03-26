@@ -12,6 +12,7 @@ cl <- makeCluster(4)
 registerDoParallel(cl)
 require("VennDiagram")
 library(devtools)
+require(ggplot2)
 
 install_github("GabrielHoffman/variancePartition")
 library(variancePartition)
@@ -113,6 +114,21 @@ plotPCAmeta=function(GE,metadata,variable,filepath,discretizemethod)
     my.plots[[i]]=plotPCA(filepath,GE[[i]],temp,variable)
     
   }
+  
+  graphics.off()
+  
+  pdf(paste(filepath,variable,"-",discretizemethod,".pdf",sep=""), onefile=TRUE)
+  for (my.plot in my.plots) {
+    replayPlot(my.plot)
+  }
+  graphics.off()
+  
+}
+
+savePDF=function(myplots,variable,filepath,discretizemethod="")
+{
+  
+  
   
   graphics.off()
   
@@ -322,9 +338,12 @@ compareAccuracies=function(Decisiontable,limit,features)
     print(i)
       
      # resultRosettaWithUSMod7=rosetta(DecisiontableBinary,classifier="StandardVoter",discrete=TRUE,underSample = TRUE)
-      
-    resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decisionSLE")],classifier="StandardVoter",discreteMask=TRUE,discrete = TRUE,ruleFiltration=TRUE,ruleFiltrSupport=c(1,3))
-    Accuracies=append(Accuracies,resultRosetta$quality$Accuracy.Mean)
+     #For SLE 
+    #resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter",discreteMask=TRUE,discrete = TRUE,ruleFiltration=TRUE,ruleFiltrSupport=c(1,3))
+     #FOR AML
+    resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter",discrete=FALSE, discreteMethod="EqualFrequency", discreteParam=3)
+    
+     Accuracies=append(Accuracies,resultRosetta$quality$Accuracy.Mean)
   }
     plot(Accuracies,type='l',xaxt="n",main="Accuracies")
     axis(1,at=seq(1,as.numeric(limit/10), by = 1),labels=as.character(seq(10, limit, by = 10)))
@@ -338,8 +357,8 @@ prepareDT=function(DT,values)
   temp=DT[,1:dim(DT)[2]-1]
   temp=as.matrix(temp)
   temp[temp=="up"]<-values[3]
-  temp[temp=="down"]<-values[2]
-  temp[temp=="normal"]<-values[1]
+  temp[temp=="down"]<-values[1]
+  temp[temp=="normal"]<-values[2]
   temp=apply(temp,2,as.numeric)
   temp=as.data.frame(temp)
   decisiontemp=unlist(lapply(DT$decisionSLE,as.character))
@@ -354,18 +373,20 @@ prepareDT=function(DT,values)
 }
 clusterRules=function(result,objects)
 {
-result=filterResultRosetta13
-objects=rownames(DescretizedDF13)
+#result=filterResultRosetta13
+#objects=rownames(DescretizedDF13)
   resultMatrix=matrix(0,nrow=dim(result)[1],ncol=length(objects))
   colnames(resultMatrix)<-objects
   for(i in 1:dim(result)[1])
   {
     SUPP_SET_LHS=unlist(as.list(strsplit(as.character(result$SUPP_SET_LHS[[i]]), ",")))
-    SUPP_SET_RHS=unlist(as.list(strsplit(as.character(result$SUPP_SET_RHS[[i]]), ",")))
-    SUPP_SET=intersect(SUPP_SET_LHS,SUPP_SET_RHS)
-    resultMatrix[i,which(colnames(resultMatrix) %in% SUPP_SET)]=1
+    #SUPP_SET_RHS=unlist(as.list(strsplit(as.character(result$SUPP_SET_RHS[[i]]), ",")))
+    #SUPP_SET=intersect(SUPP_SET_LHS,SUPP_SET_RHS)
+    resultMatrix[i,which(colnames(resultMatrix) %in% SUPP_SET_LHS)]=1
     
   }
+  resultMatrix=resultMatrix[,which(colSums(resultMatrix)!=0)]
+  #resultMatrix=resultMatrix[,which(colSums(resultMatrix)!=-dim(resultMatrix)[1])]
   return(resultMatrix)
 }
 

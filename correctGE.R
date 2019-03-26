@@ -117,3 +117,5 @@ write.csv(logDA13PatientWithoutBatch, file ="DA13.csv")
 write.table(logDA23PatientWithoutBatch, file ="DA23.csv",row.names = TRUE)
 
 
+
+

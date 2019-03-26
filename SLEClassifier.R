@@ -14,6 +14,10 @@ registerDoParallel(cl)
 library(Boruta)
 library(R.ROSETTA)
 library(plyr)
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+ # install.packages("BiocManager")
+#BiocManager::install("Ringo", version = "3.8")
+library(Ringo)
 options(stringsAsFactors = FALSE)
 options(numericAsFactors=FALSE)
 
@@ -68,7 +72,7 @@ DescretizedDF13$decisionSLE=as.character(DescretizedDF13$decisionSLE)
 #resultRosetta13=rosetta(DescretizedDF13[,append(borutaFeatures13,"decisionSLE")],classifier="StandardVoter",)
 rownames(DescretizedDF13)<-rownames(logDA13PatientWithoutBatch)
 
-temp=prepareDT(DescretizedDF13[,append(borutaFeatures13[1:40],"decisionSLE")],c(0,1,2))
+temp=prepareDT(DescretizedDF13[,append(borutaFeatures13[1:40],"decisionSLE")],c(1,2,3))
 
 resultRosetta13=rosetta(temp,classifier="StandardVoter",discrete = TRUE)
 
@@ -76,6 +80,8 @@ resultRosetta13=rosetta(temp,classifier="StandardVoter",discrete = TRUE)
 #temp=apply(as.matrix(temp),1,function(x) lapply(x,function(y) print(y)))
 #temp$decisionSLE=as.factor(temp$decisionSLE)
 recalculatedResultRosetta13=recalculateRules(temp,resultRosetta13$main,discrete = TRUE)
+#Filter according to pval of the rules
+recalculatedResultRosetta13=recalculatedResultRosetta13[which(recalculatedResultRosetta13$PVAL<=0.08),]
 
 ruleHeatmap(temp, recalculatedResultRosetta13, discrete =TRUE,ind=1)
 
@@ -90,3 +96,15 @@ resultRosetta13Genetic40=readRDS("resultRosetta13Genetic40")
 filterResultRosetta13=recalculatedResultRosetta13[recalculatedResultRosetta13$DECISION=="3",]
 
 clusteredRules=clusterRules(filterResultRosetta13,rownames(DescretizedDF13))
+
+
+clusteredRules=clusterRules(recalculatedResultRosetta13,rownames(DescretizedDF13))
+
+
+
+#heatmap(clusteredRules, scale = "none", Rowv = NA, Colv = NA, col = cm.colors(2), main = "HeatMap Example") 
+heatmap(clusteredRules, scale = "none",  col = cm.colors(2), main = "HeatMap Example")
+
+
+clusters=heatmap.F(t(clusteredRules),distmethod='pearson')
+f.FeatureHeatmap(resultRosetta13$main)
