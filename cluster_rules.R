@@ -17,6 +17,7 @@ BiocManager::install("preprocessCore")
 }
 
 #------------ DATA ----------------------------------------------------
+
 result_John40_remove1 <- readRDS("/Users/hp/Desktop/mapp/result_John40_remove1.rds")
 discDA13_remove1 <- read.csv("/Users/hp/Desktop/mapp/discDA13_remove1.csv")
 features13_remove1 <- FilterFeatures("/Users/hp/Desktop/out_remove1/output13_remove1_RI.csv", 1000)
@@ -24,7 +25,7 @@ rownames(discDA13_remove1) <- discDA13_remove1$X
 dt_40_remove1=prepareDT(discDA13_remove1[,append(features13_remove1[1:40],"decisionSLE")],c(1,2,3))
 
 
-#--------- CLUSTER RULES ---------------------------------------------
+#--------- CLUSTER OBJECTS BASED ON RULES --------------------------------------------------------------
 
 recal_John40_remove1 <- recalculateRules(dt_40_remove1, 
                                          result_John40_remove1$main[result_John40_remove1$main$ACC_RHS >= 0.8 & result_John40_remove1$main$PVAL < 0.05,], 
@@ -44,17 +45,80 @@ clusterRules <- clusterRules[, order(colnames(clusterRules))]
 rownames(df) == colnames(clusterRules)
 
 #build heat map 
-rule_cluster=heatmap.F((clusterRules),
+rule_cluster=heatmap.F(t(clusterRules),
                        colors = c("white", "blue"), 
                        cutoffmethod = "number",
                        cutoff = 5,
                        distmethod='pearson')
 
 rule_cluster <- as.data.frame(rule_cluster)
-rule_clusterDA3 <- rule_clusterDA3[order(rownames(rule_clusterDA3)), , drop = FALSE]
+
+#Give the colors names... 
+rule_cluster[rule_cluster$rule_cluster == "#E41A1C",]$color <- "red"
+rule_cluster[rule_cluster$rule_cluster == "#4DAF4A",]$color <- "green"
+rule_cluster[rule_cluster$rule_cluster == "#377EB8",]$color <- "blue"
+rule_cluster[rule_cluster$rule_cluster == "#FF7F00",]$color <- "orange"
+rule_cluster[rule_cluster$rule_cluster == "#984EA3",]$color <- "purple"
+
+#------------ CUSTOMIZE VISUNET -----------------------------------------
+
+filt <- result_John40_remove1$main[result_John40_remove1$main$PVAL < 0.05,]
+vis_out <- visunet(filt, type = "RDF")
+
+green <- rulesInCluster(filt, rownames(rule_cluster[rule_cluster$color == "green",]))
+id_green <- getId(green[green$n >= 15,])
+
+cust <- vis_out$all$nodes
+cust$color <- "grey"
+cust$color[which(as.character(cust$id) %in% id_green)] <- "green"
+custList <- list(nodes = cust, CustCol =  c("color"))
+vis_out <- visunet(recal, type = "RDF", CustObjectNodes = custList)
+
+  
+#------------ FUNCTIONS MAPPING ------------------------------------------
 
 
-#------------ FUNCTIONS ---------------------------
+rulesInCluster <- function(recal, samples){
+  clust <- array(0, NROW(recal))
+  
+  for(i in 1:length(samples)){
+   
+    for(k in 1:NROW(recal)){
+      a <- strsplit(as.character(recal$SUPP_SET_RHS[k]), ",")
+      
+      for(j in 1:length(a[[1]])){
+        
+        if(samples[i] == a[[1]][j]){
+          clust[k] <- clust[k] + 1 
+        }
+      }
+    }
+  }
+  clust <- cbind.data.frame(recal$FEATURES, recal$CUTS_COND, recal$DECISION, clust)
+  colnames(clust) <- c("FEATURES", "CUTS_COND", "DECISION", "n")
+  
+  return(clust)
+}
+
+getId <- function(rules){
+  id_tot <- array()
+
+  for(i in 1:NROW(rules)){
+    features <- unlist(strsplit(as.character(rules$FEATURES[i]), ","))
+    values <- unlist(strsplit(as.character(rules$CUTS_COND[i]), ","))
+    id <- array("", length(features))
+    
+    for(j in 1:length(features)){
+      id[j] <- paste(features[j], "=", values[j], sep = "")
+    }
+    id_tot <- c(id_tot, id)
+  }
+
+  return(unique(id_tot)[-1])
+}
+
+
+#------------ FUNCTIONS CLUSTER ------------------------------------------
 
 f.FeatureHeatmap = function(rule.table){
   fe.x = strsplit(rule.table[,"FEATURES"], split=",")
