@@ -74,6 +74,17 @@ rownames(DescretizedDF13)<-rownames(logDA13PatientWithoutBatch)
 
 temp=prepareDT(DescretizedDF13[,append(borutaFeatures13[1:40],"decisionSLE")],c(1,2,3))
 
+SLEclassifier=fread("DA13.csv") 
+SLEclassifier=as.data.frame(SLEclassifier)
+row.names(SLEclassifier) <- SLEclassifier$V1
+SLEclassifier=SLEclassifier[,2:dim(SLEclassifier)[2]]
+
+
+SLE_Johnson<- Classifier(classifier = SLEclassifier,flagAccuracy="Johnson",path="/newRun",
+                                          MCFSFeatures=FilterFeatures("out_remove1/output13_remove1_RI.csv",1000)[[1]],
+                                          
+                         ontology="BP",numberOfFeatures=34,keyType="SYMBOL",underSample=FALSE)
+
 resultRosetta13=rosetta(temp,classifier="StandardVoter",discrete = TRUE)
 
 #temp=as.matrix(temp)
