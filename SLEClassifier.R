@@ -85,6 +85,7 @@ SLE_Johnson<- Classifier(classifier = SLEclassifier,flagAccuracy="Johnson",path=
                                           
                          ontology="BP",numberOfFeatures=34,keyType="SYMBOL",underSample=FALSE)
 
+SLE_Johnson$computeEnrichment()
 resultRosetta13=rosetta(temp,classifier="StandardVoter",discrete = TRUE)
 
 #temp=as.matrix(temp)
