@@ -1,0 +1,593 @@
+---
+title: "Red Cluster All "
+author: "SaraYones"
+date: "7/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r c3, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$c3[indexc3],index=indexc3,phenotypeTable=phenotypeTable,phenotypeName="c3","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$c3[indexc3],index=indexc3,phenotypeTable=phenotypeTable,phenotypeName="c3","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters = clusters,index=indexc3,phenotype = phenotype)
+
+```
+
+```{r c4, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$c4[indexc4],index=indexc4,phenotypeTable=phenotypeTable,phenotypeName="c4","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$c4[indexc4],index=indexc4,phenotypeTable=phenotypeTable,phenotypeName="c4","red",flag = TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters = clusters,index=indexc4,phenotype = phenotype)
+
+```
+
+```{r Neutrophil count, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$neutrophil_count[indexNC],index=indexNC,phenotypeTable=phenotypeTable,phenotypeName="NC","red",flag = FALSE,flagCont = TRUE)
+
+print("All Rules")
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$neutrophil_count[indexNC],index=indexNC,phenotypeTable=phenotypeTable,phenotypeName="NC","red",flag = TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters = clusters,index=indexNC,phenotype = phenotype)
+
+
+```
+
+
+```{r Neutrophil percent, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$neutrophil_percent[indexNP],index=indexNP,phenotypeTable=phenotypeTable,phenotypeName="NP","red", flag=FALSE,flagCont = TRUE)
+print("All Rules")
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$neutrophil_percent[indexNP],index=indexNP,phenotypeTable=phenotypeTable,phenotypeName="NP","red",flag=TRUE,flagCont = TRUE)
+
+
+metaInformation("red",clusters = clusters,index=indexNP,phenotype = phenotype)
+```
+
+```{r lymphocyte count, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$lymphocyte_count[indexLC],index=indexLC,phenotypeTable=phenotypeTable,phenotypeName="LC","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$lymphocyte_count[indexLC],index=indexLC,phenotypeTable=phenotypeTable,phenotypeName="LC","red",flag = TRUE,flagCont = TRUE)
+
+
+metaInformation("red",clusters = clusters,index=indexLC,phenotype = phenotype)
+```
+
+```{r lymphocyte percent, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$lymphocyte_percent[indexLP],index=indexLP,phenotypeTable=phenotypeTable,phenotypeName="LP","red",flag= FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$lymphocyte_percent[indexLP],index=indexLP,phenotypeTable=phenotypeTable,phenotypeName="LP","red", flag=TRUE,flagCont = TRUE)
+
+
+metaInformation("red",clusters = clusters,index=indexLP,phenotype = phenotype)
+
+```
+
+
+```{r  age, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$age,index=c(1:length(phenotype$age)),phenotypeTable=phenotypeTable,phenotypeName="age","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$age,index=c(1:length(phenotype$age)),phenotypeTable=phenotypeTable,phenotypeName="age","red",flag=TRUE,flagCont = TRUE)
+
+
+
+metaInformation("red",clusters=clusters,index=c(1:length(phenotype$age)),phenotype = phenotype)
+```
+
+```{r wbc, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$wbc[indexwbc],index=indexwbc,phenotypeTable=phenotypeTable,phenotypeName="WBC","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$wbc[indexwbc],index=indexwbc,phenotypeTable=phenotypeTable,phenotypeName="WBC","red", flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexwbc,phenotype = phenotype)
+```
+
+
+```{r Monocyte Count, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$monocyte_count[indexMC],index=indexMC,phenotypeTable=phenotypeTable,phenotypeName="Monocyte count ","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$monocyte_count[indexMC],index=indexMC,phenotypeTable=phenotypeTable,phenotypeName="Monocyte count ","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexMC,phenotype = phenotype)
+```
+
+```{r Monocyte Percent, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$monocyte_percent[indexMP],index=indexMC,phenotypeTable=phenotypeTable,phenotypeName="Monocyte Percent ","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$monocyte_percent[indexMP],index=indexMP,phenotypeTable=phenotypeTable,phenotypeName="Monocyte Percent ","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexMP,phenotype = phenotype)
+
+```
+
+```{r ESR, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$esr[indexESR],index=indexESR,phenotypeTable=phenotypeTable,phenotypeName="ESR","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$esr[indexESR],index=indexESR,phenotypeTable=phenotypeTable,phenotypeName="ESR","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexESR,phenotype = phenotype)
+```
+
+```{r HGB, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$hgb[indexhgb],index=indexhgb,phenotypeTable=phenotypeTable,phenotypeName="HGB","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$hgb[indexhgb],index=indexhgb,phenotypeTable=phenotypeTable,phenotypeName="HGB","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexMC,phenotype = phenotype)
+```
+
+```{r HCT, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$hct[indexhct],index=indexhct,phenotypeTable=phenotypeTable,phenotypeName="HCT","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$hct[indexhct],index=indexhct,phenotypeTable=phenotypeTable,phenotypeName="HCT","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexhct,phenotype = phenotype)
+```
+
+```{r MCV, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$mcv[indexmcv],index=indexmcv,phenotypeTable=phenotypeTable,phenotypeName="MCV","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$mcv[indexmcv],index=indexmcv,phenotypeTable=phenotypeTable,phenotypeName="MCV","red",flag=TRUE,flagCont = TRUE)
+metaInformation("red",clusters =clusters,index=indexmcv ,phenotype = phenotype)
+```
+
+```{r MCH, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$mch[indexmch],index=indexmch,phenotypeTable=phenotypeTable,phenotypeName="MCH","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$mch[indexmch],index=indexmch,phenotypeTable=phenotypeTable,phenotypeName="MCH","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexmch,phenotype = phenotype)
+
+```
+
+```{r MCHC, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$mchc[indexmchc],index=indexmchc,phenotypeTable=phenotypeTable,phenotypeName="MCHC","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$mchc[indexmchc],index=indexmchc,phenotypeTable=phenotypeTable,phenotypeName="MCHC","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexmchc,phenotype = phenotype)
+
+```
+
+
+
+```{r RDW, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$rdw[indexrdw],index=indexrdw,phenotypeTable=phenotypeTable,phenotypeName="RDW","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$rdw[indexrdw],index=indexrdw,phenotypeTable=phenotypeTable,phenotypeName="RDW","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexrdw,phenotype = phenotype)
+
+```
+
+
+
+```{r MPV, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$mpv[indexmpv],index=indexmpv,phenotypeTable=phenotypeTable,phenotypeName="MPV","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$mpv[indexmpv],index=indexmpv,phenotypeTable=phenotypeTable,phenotypeName="MPV","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexmpv,phenotype = phenotype)
+
+```
+
+
+```{r CR, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$cr[indexcr],index=indexcr,phenotypeTable=phenotypeTable,phenotypeName="CR","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$cr[indexcr],index=indexcr,phenotypeTable=phenotypeTable,phenotypeName="CR","red",flag=TRUE,flagCont = TRUE)
+metaInformation("red",clusters =clusters,index=indexcr,phenotype = phenotype)
+
+```
+
+```{r ALB, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$alb[indexalb],index=indexalb,phenotypeTable=phenotypeTable,phenotypeName="ALB","red",flag=FALSE,flagCont = TRUE)
+
+print("All Rules")
+phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$alb[indexalb],index=indexalb,phenotypeTable=phenotypeTable,phenotypeName="ALB","red",flag=TRUE,flagCont = TRUE)
+
+metaInformation("red",clusters =clusters,index=indexalb,phenotype = phenotype)
+```
+
+```{r DS_DNA, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$ds_dna[indexds_dna],index=indexds_dna,phenotypeTable=phenotypeTable,phenotypeName="DS_DNA","red",flag=FALSE,flagCont = TRUE)
+  
+  print("All Rules")
+  phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$ds_dna[indexds_dna],index=indexds_dna,phenotypeTable=phenotypeTable,phenotypeName="DS_DNA","red",flag=TRUE,flagCont = TRUE)
+  
+metaInformation("red",clusters =clusters,index=indexds_dna,phenotype = phenotype)
+```
+  
+```{r AST, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$ast[indexast],index=indexast,phenotypeTable=phenotypeTable,phenotypeName="AST","red",flag=FALSE,flagCont = TRUE)
+  
+  print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$ast[indexast],index=indexast,phenotypeTable=phenotypeTable,phenotypeName="AST","red",flag=TRUE,flagCont = TRUE)
+ metaInformation("red",clusters =clusters,index=indexast,phenotype = phenotype)
+  
+```
+  
+    
+```{r ALD, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$ald[indexald],index=indexald,phenotypeTable=phenotypeTable,phenotypeName="ALD","red",flag=FALSE,flagCont = TRUE)
+  
+print("All Rules")
+  phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$ald[indexald],index=indexald,phenotypeTable=phenotypeTable,phenotypeName="ALD","red",flag=TRUE,flagCont = TRUE)
+  
+  metaInformation("red",clusters =clusters,index=indexald,phenotype = phenotype)
+```
+
+```{r ALT, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$alt[indexalt],index=indexalt,phenotypeTable=phenotypeTable,phenotypeName="ALT","red",flag=FALSE,flagCont = TRUE)
+  
+print("All Rules")
+   phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$alt[indexalt],index=indexalt,phenotypeTable=phenotypeTable,phenotypeName="ALT","red",flag=TRUE,flagCont = TRUE)
+   metaInformation("red",clusters =clusters,index=indexalt,phenotype = phenotype)
+```
+  
+  
+```{r LDH, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$ldh[indexldh],index=indexldh,phenotypeTable=phenotypeTable,phenotypeName="LDH","red",flag=FALSE,flagCont = TRUE)
+  
+print("All Rules")
+  phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$ldh[indexldh],index=indexldh,phenotypeTable=phenotypeTable,phenotypeName="LDH","red",flag=TRUE,flagCont = TRUE)
+  metaInformation("red",clusters =clusters,index=indexldh,phenotype = phenotype)
+```
+
+```{r SLEDAI, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$sledai[indexsledai],index=indexsledai,phenotypeTable=phenotypeTable,phenotypeName="SLEDAI","red",flag=FALSE,flagCont = TRUE)
+  
+print("All Rules")
+  phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$sledai[indexsledai],index=indexsledai,phenotypeTable=phenotypeTable,phenotypeName="SLEDAI","red",flag=TRUE,flagCont = TRUE)
+  
+  metaInformation("red",clusters =clusters,index=indexsledai,phenotype = phenotype)
+```
+
+
+
+```{r platelet_count, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$platelet_count[indexplatelet_count],index=indexplatelet_count,phenotypeTable=phenotypeTable,phenotypeName="red","purple",flag=FALSE,flagCont = TRUE)
+  
+print("All Rules")
+  phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$platelet_count[indexplatelet_count],index=indexplatelet_count,phenotypeTable=phenotypeTable,phenotypeName="platelet_count","red",flag=TRUE,flagCont = TRUE)
+  
+  metaInformation("red",clusters =clusters,index=indexsledai,phenotype = phenotype)
+```
+
+
+
+```{r hematuria, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$hematuria[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="hematuria","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$hematuria[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="hematuria","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+
+```{r proteinuria, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$proteinuria[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="proteinuria","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$proteinuria[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="proteinuria","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+
+```{r pyuria, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$pyuria[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="pyuria","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$pyuria[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="pyuria","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+
+```{r new_rash, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$new_rash[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="new_rash","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$new_rash[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="new_rash","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+
+
+
+    
+    ```{r alopecia, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$alopecia[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="alopecia","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$alopecia[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="alopecia","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+    
+
+    
+      
+    ```{r mucosal_ulcers, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$mucosal_ulcers[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="mucosal_ulcers","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$mucosal_ulcers[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="mucosal_ulcers","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+    
+        
+      
+    ```{r pleurisy, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$pleurisy[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="pleurisy","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$pleurisy[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="pleurisy","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+      
+    ```{r pericarditis, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$pericarditis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="pericarditis","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$pericarditis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="pericarditis","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+    
+      
+    ```{r low_complement, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$low_complement[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="low_complement","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$low_complement[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="low_complement","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```
+    
+    ```{r increased_dna_binding, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$increased_dna_binding[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="increased_dna_binding","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$increased_dna_binding[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="increased_dna_binding","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r fever, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$fever[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="fever","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$fever[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="fever","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r thrombocytopenia, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$thrombocytopenia[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="thrombocytopenia","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$thrombocytopenia[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="thrombocytopenia","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+    ```{r leukopenia, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$leukopenia[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="leukopenia","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$leukopenia[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="leukopenia","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r renal, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$renal[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="renal","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$renal[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="renal","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r musculoskeletal, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$musculoskeletal[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="musculoskeletal","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$musculoskeletal[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="musculoskeletal","red",flag=TRUE,flagCont = FALSE)
+  
+  metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+
+    ```{r cyclophosphamide_category, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$cyclophosphamide_category[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="cyclophosphamide_category","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$cyclophosphamide_category[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="cyclophosphamide_category","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+    ```{r oral_steroids_category, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$oral_steroids_category[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="oral_steroids_category","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$oral_steroids_category[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="oral_steroids_category","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+    ```{r mycophenolate_category, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$mycophenolate_category[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="mycophenolate_category","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$mycophenolate_category[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="mycophenolate_category","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters =clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+    ```{r hydroxychloroquine_category, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$hydroxychloroquine_category[indexhydroxychloroquine_category],index=indexhydroxychloroquine_category,phenotypeTable=phenotypeTable,phenotypeName="hydroxychloroquine_category","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$hydroxychloroquine_category[indexhydroxychloroquine_category],index=indexhydroxychloroquine_category,phenotypeTable=phenotypeTable,phenotypeName="hydroxychloroquine_category","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexhydroxychloroquine_category,phenotype = phenotype)
+```        
+
+
+    ```{r metotrexate_category, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$metotrexate_category[indexmetotrexate_category],index=indexmetotrexate_category,phenotypeTable=phenotypeTable,phenotypeName="metotrexate_category","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$metotrexate_category[indexmetotrexate_category],index=indexmetotrexate_category,phenotypeTable=phenotypeTable,phenotypeName="metotrexate_category","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexmetotrexate_category,phenotype = phenotype)
+```        
+
+
+    ```{r asa_category, echo=FALSE}
+  phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$asa_category[indexasa_category],index=indexasa_category,phenotypeTable=phenotypeTable,phenotypeName="asa_category","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$asa_category[indexasa_category],index=indexasa_category,phenotypeTable=phenotypeTable,phenotypeName="asa_category","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexasa_category,phenotype = phenotype)
+```        
+
+
+    ```{r mdg , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$mdg[indexmdg],index=indexmdg,phenotypeTable=phenotypeTable,phenotypeName="mdg","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$mdg[indexmdg],index=indexmdg,phenotypeTable=phenotypeTable,phenotypeName="mdg","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexmdg,phenotype = phenotype)
+```        
+
+    ```{r seizure  , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$seizure[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="seizure","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$seizure[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="seizure","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+    ```{r psychosis  , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$psychosis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="psychosis","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$psychosis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="psychosis","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+    ```{r organic_brain_syndrome    , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$organic_brain_syndrome[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="organic_brain_syndrome","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$organic_brain_syndrome[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="organic_brain_syndrome","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r lupus_headache, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$lupus_headache[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="lupus_headache","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$lupus_headache[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="lupus_headache","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r cva, echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$cva[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="cva","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$cva[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="cva","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r vasculitis , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$vasculitis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="vasculitis","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$vasculitis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="vasculitis","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r arthritis , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$arthritis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="arthritis","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$arthritis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="arthritis","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+    ```{r myositis , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$myositis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="myositis","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$myositis[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="myositis","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        
+
+
+    ```{r urinary_casts , echo=FALSE}
+phenotypeComparison(20,clusters,filt=filt,phenotype=phenotype$urinary_casts[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="urinary_casts","red",flag=FALSE,flagCont = FALSE)
+  
+print("All Rules")
+ phenotypeComparison(1,clusters,filt=filt,phenotype=phenotype$urinary_casts[indexcommon],index=indexcommon,phenotypeTable=phenotypeTable,phenotypeName="urinary_casts","red",flag=TRUE,flagCont = FALSE)
+  
+metaInformation("red",clusters=clusters,index=indexcommon,phenotype = phenotype)
+```        

@@ -1,0 +1,112 @@
+---
+title: "SLE Gene Enrichment Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r GEA, echo=FALSE}
+#DEPRECATED CHECK script function_classifier
+#----------------------------------------------------------------
+library("xlsx")
+SLE_Annotation=read.xlsx("SLE-genes-Annotation2.xlsx", sheetName="WhichGeneWhichCluster", header=TRUE)
+Orange=SLE_Annotation[which(SLE_Annotation[,"ORANGE"]=="y"),"All.Genes"]
+Blue=SLE_Annotation[which(SLE_Annotation[,"BLUE"]=="y"),"All.Genes"]
+Red=SLE_Annotation[which(SLE_Annotation[,"RED"]=="y"),"All.Genes"]
+Purple=SLE_Annotation[which(SLE_Annotation[,"PURPLE"]=="y"),"All.Genes"]
+Green=SLE_Annotation[which(SLE_Annotation[,"GREEN"]=="y"),"All.Genes"]
+DA1Genes=SLE_Annotation[which(SLE_Annotation[,"DA1"]=="y"),"All.Genes"]
+DA3Genes=SLE_Annotation[which(SLE_Annotation[,"DA3"]=="y"),"All.Genes"]
+DA13=fread("DA13.csv")
+background=colnames(DA13)
+SLE_Johnson$enrichment[[1]]=GOenrichment(SLE_Johnson$MCFSFeatures[1:SLE_Johnson$numberOfFeatures],colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+SLE_Johnson$enrichment[[2]]=GOenrichment(DA1Genes,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+
+
+x=as.data.frame(cbind(SLE_Johnson$enrichment[[2]]$result$term_id,SLE_Johnson$enrichment[[2]]$result$term_name,SLE_Johnson$enrichment[[2]]$result$term_size,SLE_Johnson$enrichment[[2]]$result$p_value,SLE_Johnson$enrichment[[2]]$result$intersection))
+colnames(x)<-c("term_id","term_name","term_size","intersection")
+write.xlsx(x,"EnrichedTerms.xlsx", sheetName="DA1",append = TRUE)
+
+
+SLE_Johnson$enrichment[[3]]=GOenrichment(DA3Genes,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+
+x=as.data.frame(cbind(SLE_Johnson$enrichment[[3]]$result$term_id,SLE_Johnson$enrichment[[3]]$result$term_name,SLE_Johnson$enrichment[[3]]$result$term_size,SLE_Johnson$enrichment[[3]]$result$p_value,SLE_Johnson$enrichment[[3]]$result$intersection))
+colnames(x)<-c("term_id","term_name","term_size","intersection")
+write.xlsx(x,"EnrichedTerms.xlsx", sheetName="DA3",append = TRUE)
+
+
+                                          MCFSFeaturesALLSignificant=FilterFeatures("out_remove1/output13_remove1_RI.csv",4980)
+                                           GEA_ALL=GOenrichment(MCFSFeaturesALLSignificant,colnames(DA13),SLE_Johnson$keyType,SLE_Johnson$ontology)
+
+
+#Orange
+SLE_Johnson$enrichment[[4]]=GOenrichment(Orange,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+
+x=as.data.frame(cbind(SLE_Johnson$enrichment[[4]]$result$term_id,SLE_Johnson$enrichment[[4]]$result$term_name,SLE_Johnson$enrichment[[4]]$result$term_size,SLE_Johnson$enrichment[[4]]$result$p_value,SLE_Johnson$enrichment[[4]]$result$intersection))
+colnames(x)<-c("term_id","term_name","term_size","intersection")
+write.xlsx(x,"EnrichedTerms.xlsx", sheetName="Orange",append = TRUE)
+
+#Blue
+SLE_Johnson$enrichment[[5]]=GOenrichment(Blue,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+x=as.data.frame(cbind(SLE_Johnson$enrichment[[5]]$result$term_id,SLE_Johnson$enrichment[[5]]$result$term_name,SLE_Johnson$enrichment[[5]]$result$term_size,SLE_Johnson$enrichment[[5]]$result$p_value,SLE_Johnson$enrichment[[5]]$result$intersection))
+colnames(x)<-c("term_id","term_name","term_size","intersection")
+write.xlsx(x,"EnrichedTerms.xlsx", sheetName="Blue",append = TRUE)
+#Red
+SLE_Johnson$enrichment[[6]]=GOenrichment(Red,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+x=as.data.frame(cbind(SLE_Johnson$enrichment[[6]]$result$term_id,SLE_Johnson$enrichment[[6]]$result$term_name,SLE_Johnson$enrichment[[6]]$result$term_size,SLE_Johnson$enrichment[[6]]$result$p_value,SLE_Johnson$enrichment[[6]]$result$intersection))
+colnames(x)<-c("term_id","term_name","term_size","intersection")
+write.xlsx(x,"EnrichedTerms.xlsx", sheetName="Red",append = TRUE)
+#Purple
+SLE_Johnson$enrichment[[7]]=GOenrichment(Purple,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+x=as.data.frame(cbind(SLE_Johnson$enrichment[[7]]$result$term_id,SLE_Johnson$enrichment[[7]]$result$term_name,SLE_Johnson$enrichment[[7]]$result$term_size,SLE_Johnson$enrichment[[7]]$result$p_value,SLE_Johnson$enrichment[[7]]$result$intersection))
+colnames(x)<-c("term_id","term_name","term_size","intersection")
+write.xlsx(x,"EnrichedTerms.xlsx", sheetName="Purple",append = TRUE)
+#Green
+SLE_Johnson$enrichment[[8]]=GOenrichment(Green,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+x=as.data.frame(cbind(SLE_Johnson$enrichment[[8]]$result$term_id,SLE_Johnson$enrichment[[8]]$result$term_name,SLE_Johnson$enrichment[[8]]$result$term_size,SLE_Johnson$enrichment[[8]]$result$p_value,SLE_Johnson$enrichment[[8]]$result$intersection))
+colnames(x)<-c("term_id","term_name","term_size","intersection")
+write.xlsx(x,"EnrichedTerms.xlsx", sheetName="Green",append = TRUE)
+
+#gostplot(SLE_Johnson$enrichment[[1]], capped = TRUE, interactive = TRUE)
+#gostplot(SLE_Johnson$enrichment[[2]], capped = TRUE, interactive = TRUE)
+#gostplot(SLE_Johnson$enrichment[[3]], capped = TRUE, interactive = TRUE)
+
+                   
+```
+Figure 1: DA1 Genes
+```{r figure1, echo=FALSE}
+library(gprofiler2)
+gostplot(SLE_Johnson$enrichment[[2]], capped = TRUE, interactive = TRUE)
+```
+Figure 2: DA3 Genes
+```{r figure2, echo=FALSE}
+library(gprofiler2)
+gostplot(SLE_Johnson$enrichment[[3]], capped = TRUE, interactive = TRUE)
+```
+Figure 3: Genes in orange subgroup
+```{r figure3, echo=FALSE}
+library(gprofiler2)
+gostplot(SLE_Johnson$enrichment[[4]], capped = TRUE, interactive = TRUE)
+```
+Figure 4: Genes in blue subgroup
+```{r figure4, echo=FALSE}
+library(gprofiler2)
+gostplot(SLE_Johnson$enrichment[[5]], capped = TRUE, interactive = TRUE)
+```
+Figure 5: Genes in red subgroup
+```{r figure5, echo=FALSE}
+library(gprofiler2)
+gostplot(SLE_Johnson$enrichment[[6]], capped = TRUE, interactive = TRUE)
+```
+Figure 6: Genes in purple subgroup
+```{r figure6, echo=FALSE}
+library(gprofiler2)
+gostplot(SLE_Johnson$enrichment[[7]], capped = TRUE, interactive = TRUE)
+```
+Figure 7: Genes in green subgroup
+```{r figure7, echo=FALSE}
+library(gprofiler2)
+gostplot(SLE_Johnson$enrichment[[8]], capped = TRUE, interactive = TRUE)
+```

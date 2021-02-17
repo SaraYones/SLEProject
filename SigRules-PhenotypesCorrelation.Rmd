@@ -1,0 +1,51 @@
+---
+title: "SigRules - Phenotypes Correlations "
+author: "SaraYones"
+date: "7/5/2020"
+output: html_document
+---
+
+<!-- ```{r red, include=FALSE} -->
+<!-- knitr::opts_chunk$set(echo = TRUE) -->
+<!-- ``` -->
+<!-- ```{r eed, echo=FALSE, warning=FALSE} -->
+<!-- checkRedundantPhenotypes("ClustersHeatmaps/BinaryResults",indicesPhenotypes,clusters=clusters[which(clusters$color_cluster=="red"),],filt=filt,phenotypeTable = phenotype,phenotypeName = phenotypeName) -->
+
+<!-- ``` -->
+
+
+<!-- ```{r green, include=FALSE} -->
+<!-- knitr::opts_chunk$set(echo = TRUE) -->
+<!-- ``` -->
+<!-- ```{r Red, echo=FALSE, warning=FALSE} -->
+<!-- checkRedundantPhenotypes("ClustersHeatmaps",indicesPhenotypes,clusters=clusters[which(clusters$color_cluster=="green"),],filt=filt,phenotypeTable = phenotype,phenotypeName = phenotypeName) -->
+
+<!-- ``` -->
+
+
+```{r blue, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r Red, echo=FALSE, warning=FALSE}
+checkRedundantPhenotypes("ClustersHeatmaps/BinaryResults",indicesPhenotypes,clusters=clusters[which(clusters$color_cluster=="blue"),],filt=filt,phenotypeTable = phenotype,phenotypeName = phenotypeName)
+
+```
+
+
+<!-- ```{r purple, include=FALSE} -->
+<!-- knitr::opts_chunk$set(echo = TRUE) -->
+<!-- ``` -->
+<!-- ```{r Red, echo=FALSE, warning=FALSE} -->
+
+<!-- checkRedundantPhenotypes("ClustersHeatmaps/BinaryResults",indicesPhenotypes,clusters=clusters[which(clusters$color_cluster=="purple"),],filt=filt,phenotypeTable = phenotype,phenotypeName = phenotypeName) -->
+
+<!-- ``` -->
+
+
+<!-- ```{r orange, include=FALSE} -->
+<!-- knitr::opts_chunk$set(echo = TRUE) -->
+<!-- ``` -->
+<!-- ```{r Red, echo=FALSE, warning=FALSE} -->
+<!-- checkRedundantPhenotypes("ClustersHeatmaps/BinaryResults",indicesPhenotypes,clusters=clusters[which(clusters$color_cluster=="orange"),],filt=filt,phenotypeTable = phenotype,phenotypeName = phenotypeName) -->
+
+<!-- ``` -->

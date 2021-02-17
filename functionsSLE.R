@@ -13,11 +13,16 @@ registerDoParallel(cl)
 require("VennDiagram")
 library(devtools)
 require(ggplot2)
+library(readxl)   
+library(plyr)
 
-install_github("GabrielHoffman/variancePartition")
+#install_github("GabrielHoffman/variancePartition")
 library(variancePartition)
 library('variancePartition')
 
+#library("devtools")
+#install_github("kassambara\easyGgplot2")
+library(easyGgplot2)
 preprocessMetaData=function(metadata)
 {
   metadata[,"visit:"]=gsub("(visit: (([0-9]*[.])?[0-9]+))","\\2",metadata[,"visit:"])
@@ -373,13 +378,13 @@ prepareDT=function(DT,values)
 }
 clusterRules=function(result,objects)
 {
-#result=filterResultRosetta13
-#objects=rownames(DescretizedDF13)
+  #result=filterResultRosetta13
+  #objects=rownames(DescretizedDF13)
   resultMatrix=matrix(0,nrow=dim(result)[1],ncol=length(objects))
   colnames(resultMatrix)<-objects
   for(i in 1:dim(result)[1])
   {
-    SUPP_SET_LHS=unlist(as.list(strsplit(as.character(result$SUPP_SET_LHS[[i]]), ",")))
+    SUPP_SET_LHS=unlist(as.list(strsplit(as.character(result$supportSetLHS[[i]]), ",")))
     #SUPP_SET_RHS=unlist(as.list(strsplit(as.character(result$SUPP_SET_RHS[[i]]), ",")))
     #SUPP_SET=intersect(SUPP_SET_LHS,SUPP_SET_RHS)
     resultMatrix[i,which(colnames(resultMatrix) %in% SUPP_SET_LHS)]=1

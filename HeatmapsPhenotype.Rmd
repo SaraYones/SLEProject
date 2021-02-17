@@ -1,0 +1,50 @@
+---
+title: "HeatmapsPhenotype"
+author: "SaraYones"
+date: "6/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r c3,results="hide",echo=FALSE}
+
+sigRulesTablec3=createSigRulesTable(indexc3,66,phenotype$c3,phenotype,matrixCluster)
+
+a=sigRulesTablec3$heatmap4[,sigRulesTablec3$supportlist]
+
+order=rownames(clusters)[rownames(clusters) %in% colnames(a)]
+rownamesa=rownames(a)
+a=apply(a[,order],2,as.numeric)
+rownames(a)=rownamesa
+
+
+```
+c3:
+```{r c3plot,echo=FALSE}
+
+heatmap.2(apply(a[,order],2,as.numeric),dendrogram='none', Rowv=TRUE, Colv=FALSE,trace='none',ColSideColors = clusters[order,2])
+
+```
+
+```{r c4,results="hide",echo=FALSE}
+
+sigRulesTablec4=createSigRulesTable(indexc4,66,phenotype$c4,phenotype,matrixCluster)
+
+a=sigRulesTablec4$heatmap4[,sigRulesTablec4$supportlist]
+
+
+order=rownames(clusters)[rownames(clusters) %in% colnames(a)]
+rownamesa=rownames(a)
+a=apply(a[,order],2,as.numeric)
+rownames(a)=rownamesa
+
+```
+c4:
+```{r c4plot,echo=FALSE}
+
+heatmap.2(apply(a[,order],2,as.numeric),dendrogram='none', Rowv=TRUE, Colv=FALSE,trace='none',ColSideColors = clusters[order,2])
+
+```

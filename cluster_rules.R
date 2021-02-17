@@ -35,37 +35,97 @@ recal_John40_remove1 <- recalculateRules(dt_40_remove1,
 df <- recal_John40_remove1 #[recal_John40_remove1$DECISION == 1,] # & recal_John40_remove1$DECISION == 3,]
 rowname <- rownames(dt_40_remove1) #[DA13_remove1$decisionSLE == 1,]) #& DA13_remove1$decisionSLE == 3,])
 
-clusterRules <- clusterRule(df, 
+clusteredRules <- clusterRule(df, 
                             rowname)
 
 df <- dt_40_remove1
-df <- df[rownames(df) %in% colnames(clusterRules),]
-clusterRules <- clusterRules[, order(colnames(clusterRules))]
+df <- df[rownames(df) %in% colnames(clusteredRules),]
+clusteredRules <- clusteredRules[, order(colnames(clusteredRules))]
 
-rownames(df) == colnames(clusterRules)
+rownames(df) =colnames(clusteredRules)
 
 #build heat map 
-rule_cluster=heatmap.F(t(clusterRules),
-                       colors = c("white", "blue"), 
+rule_cluster=heatmap.F(t(clusteredRules),
+                       colors = c("black","skyblue"), 
                        cutoffmethod = "number",
                        cutoff = 5,
-                       distmethod='pearson')
+                       distmethod='binary')
 
 rule_cluster <- as.data.frame(rule_cluster)
 
 #Give the colors names... 
-rule_cluster[rule_cluster$rule_cluster == "#E41A1C",]$color <- "red"
-rule_cluster[rule_cluster$rule_cluster == "#4DAF4A",]$color <- "green"
-rule_cluster[rule_cluster$rule_cluster == "#377EB8",]$color <- "blue"
-rule_cluster[rule_cluster$rule_cluster == "#FF7F00",]$color <- "orange"
-rule_cluster[rule_cluster$rule_cluster == "#984EA3",]$color <- "purple"
+# rule_cluster[rule_cluster$rule_cluster == "#E41A1C",]$color <- "red"
+# rule_cluster[rule_cluster$rule_cluster == "#4DAF4A",]$color <- "green"
+# rule_cluster[rule_cluster$rule_cluster == "#377EB8",]$color <- "blue"
+# rule_cluster[rule_cluster$rule_cluster == "#FF7F00",]$color <- "orange"
+# rule_cluster[rule_cluster$rule_cluster == "#984EA3",]$color <- "purple"
+
+rule_cluster1=heatmap.F(t(clusterRules),
+                                            colors = c("white", "blue"), 
+                                              cutoffmethod = "number",
+                                             cutoff = 5,
+                                          distmethod='pearson')
+
+rule_cluster2=heatmap.F(t(clusterRules),
+                        colors = c("white", "blue"), 
+                        cutoffmethod = "number",
+                        cutoff = 5,
+                        distmethod='binary')
+#order rule_Cluster2 based on 1
+rule_cluster2=rule_cluster2[order(factor(names(rule_cluster2), levels = names(rule_cluster1)))]
+
+#compute percentage of difference between binary and pearson correlation
+length(which(!(rule_cluster1==rule_cluster2)))/length(rule_cluster1)
+
+
+#return back to the original
+clustersTemp=clusters
+
+#map values to the original clusters
+#check that binary and pearson have the same color code
+#pearson
+unique(rule_cluster1)
+#binary
+unique(rule_cluster2)
+#corelate the new colors with the old colors
+#old pearson
+unique(clusters$color_cluster)
+
+rule_cluster2[rule_cluster2 == "blue"] <- "1"
+rule_cluster2[rule_cluster2 == "orange"] <- "2"
+rule_cluster2[rule_cluster2 == "purple"] <- "3"
+rule_cluster2[rule_cluster2 == "darkgreen"] <- "4"
+rule_cluster2[rule_cluster2 == "red"] <- "5"
+
+rule_cluster1[rule_cluster1 == "blue"] <- "1"
+rule_cluster1[rule_cluster1 == "orange"] <- "2"
+rule_cluster1[rule_cluster1 == "purple"] <- "3"
+rule_cluster1[rule_cluster1 == "darkgreen"] <- "4"
+rule_cluster1[rule_cluster1== "red"] <- "5"
+
+clusters$color_cluster[clusters$color_cluster == "red"] <- "1"
+clusters$color_cluster[clusters$color_cluster== "green"] <- "2"
+clusters$color_cluster[clusters$color_cluster == "orange"] <- "3"
+clusters$color_cluster[clusters$color_cluster == "purple"] <- "4"
+clusters$color_cluster[clusters$color_cluster== "blue"] <- "5"
+
+clusters$color_cluster=rule_cluster2
+
+
+
+clusters$color_cluster[clusters$color_cluster == "1"] <- "red"
+clusters$color_cluster[clusters$color_cluster == "2"] <- "green"
+clusters$color_cluster[clusters$color_cluster == "3"] <- "orange"
+clusters$color_cluster[clusters$color_cluster == "4"] <- "purple"
+clusters$color_cluster[clusters$color_cluster == "5"] <- "blue"
+
 
 #------------ CUSTOMIZE VISUNET -----------------------------------------
 
-filt <- result_John40_remove1$main[result_John40_remove1$main$PVAL < 0.05,]
+filt <- result_John40_remove1$main[result_John40_remove1$main$pValue < 0.05,]
 vis_out <- visunet(filt, type = "RDF")
 
-green <- rulesInCluster(filt, rownames(rule_cluster[rule_cluster$color == "green",]))
+green <- rulesInCluster(filt, rownames(clusters[clusters == "green",]))
 id_green <- getId(green[green$n >= 15,])
 
 cust <- vis_out$all$nodes

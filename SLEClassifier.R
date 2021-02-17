@@ -14,6 +14,11 @@ registerDoParallel(cl)
 library(Boruta)
 library(R.ROSETTA)
 library(plyr)
+library(gplots) 
+#install.packages("RVenn")
+library(purrr)
+library(Rvenn)
+library(corrplot)
 #if (!requireNamespace("BiocManager", quietly = TRUE))
  # install.packages("BiocManager")
 #BiocManager::install("Ringo", version = "3.8")
@@ -23,6 +28,22 @@ options(numericAsFactors=FALSE)
 
 #Prerequiste you have to run first the correct GE script
 
+#For running test to remove multicolleniarity in a logistic regression
+library(performance)
+
+#For oversampling 
+install.packages("ROSE")
+library(ROSE)
+
+
+#install_github("kassambara/easyGgplot2")
+
+# Load easyGgplot2
+library(easyGgplot2)
+
+
+#for permutation test
+library(permute)
 
 #--------------------------------Discretizations-----------------------------------------
 #Here we want to extract 1 healthy individual per each technical replicate
@@ -85,6 +106,7 @@ SLE_Johnson<- Classifier(classifier = SLEclassifier,flagAccuracy="Johnson",path=
                                           
                          ontology="BP",numberOfFeatures=34,keyType="SYMBOL",underSample=FALSE)
 
+SLE_Johnson$computeEnrichment()
 resultRosetta13=rosetta(temp,classifier="StandardVoter",discrete = TRUE)
 
 #temp=as.matrix(temp)

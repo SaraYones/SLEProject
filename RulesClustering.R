@@ -41,7 +41,7 @@ heatmap.F = function(dataM,
   if(length(colnames(dataM))==0){colnames(dataM) = as.character(1:ncol(dataM))}
   fx = function(v){return(!all(is.na(v)))}
   dataM = dataM[apply(FUN=fx, X=dataM, MARGIN=1),apply(FUN=fx, X=dataM, MARGIN=2)]
-  distmethod = match.arg(arg=distmethod, choices=c('bicor', 'pearson', 'spearman', 'direct', 'euclidean'))
+  distmethod = match.arg(arg=distmethod, choices=c('bicor','binary', 'pearson', 'spearman', 'direct', 'euclidean'))
   clusterdim = match.arg(arg=clusterdim, choices=c('both', 'row', 'column', 'none'))
   cutoffmethod = match.arg(arg=cutoffmethod, choices=c('depth', 'height', 'number', 'none'))
   Rowv=T
@@ -77,11 +77,11 @@ heatmap.F = function(dataM,
   color.vector = c(rev(b1), b2)
   # Distance metric
   if(distmethod=='bicor'){fd = function(x){return(as.dist(1-bicor(t(x), use = 'pairwise.complete.obs')))}}
-  if(distmethod=='pearson'){fd = function(x){return(as.dist(1-cor(t(x), method='pearson', use = 'pairwise.complete.obs')))}}
+  if(distmethod=='pearson'){fd = function(x){return(as.dist(1-cor(t(x), method='pearson')))}}
   if(distmethod=='spearman'){fd = function(x){return(as.dist(1-cor(t(x), method='spearman', use = 'pairwise.complete.obs')))}}
   if(distmethod=='direct'){fd = function(x){return(as.dist(x))}}
   if(distmethod=='euclidean'){fd = function(x){return(dist(x))}}
-  
+  if(distmethod=='binary'){fd = function(x){return(dist(x,method='binary'))}}
   # Clustering method
   fh = function(x){return(stats::hclust(x,method=clustermethod))}
   
@@ -93,8 +93,10 @@ heatmap.F = function(dataM,
   if(cutoffmethod=='none'){fc = function(M){return(rep(1, nrow(M)))}}
   
   if(dendrogram%in%c('none','column')){rowcol=rep('grey70', nrow(dataM))} else {
-    rowcol = c('blue', 'red', 'orange', 'skyblue', 'yellow', 'black', 'darkblue', 'cyan', 'darkred', 'darkgreen', 'pink', 'purple', 'gray10')[suppressWarnings(fc(dataM))]
-    if(length(rowcol)!=nrow(dataM)){rowcol=rep("gray", nrow(dataM))}
+   # rowcol = c('blue', 'red', 'orange', 'skyblue', 'yellow', 'black', 'darkblue', 'cyan', 'darkred', 'darkgreen', 'pink', 'purple', 'gray10')[suppressWarnings(fc(dataM))]
+    rowcol = c('#a30019ff', '#3a5187ff', '#12664cff',  '#877194ff', '#d2722eff')[suppressWarnings(fc(dataM))]
+    
+        if(length(rowcol)!=nrow(dataM)){rowcol=rep("gray", nrow(dataM))}
   }
   
   hm = heatmap.2(dataM,
@@ -102,7 +104,9 @@ heatmap.F = function(dataM,
                  hclustfun=fh,
                  distfun=fd,
                  trace='none',
-                 Rowv=Rowv,
+                 labRow = FALSE,
+                 ylab = "Visits",
+                 xlab="Rules",
                  Colv=Colv,
                  dendrogram=dendrogram,
                  RowSideColors=rowcol,
