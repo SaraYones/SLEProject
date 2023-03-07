@@ -107,6 +107,9 @@ SLE_Johnson<- Classifier(classifier = dt_40_remove1,flagAccuracy="Johnson",path=
                                           
                          ontology="BP",numberOfFeatures=34,keyType="SYMBOL",underSample=FALSE)
 
+SLE_Johnson$computeEnrichment()
+resultRosetta13=rosetta(temp,classifier="StandardVoter",discrete = TRUE)
+>>>>>>> aa77e9918b51e4c48910f07bae5bfd662841554a
 
 SLE_Johnson<- Classifier(classifier = discDA13_remove1,flagAccuracy="Johnson",path="/newRun",
                          MCFSFeatures=FilterFeatures("/Users/hp/Desktop/out_remove1/output13_remove1_RI.csv",1000),

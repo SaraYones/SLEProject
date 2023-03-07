@@ -8,8 +8,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r GEA, echo=FALSE}
+
 #DEPRECATED CHECK script function_classifier
 #----------------------------------------------------------------
+
 library("xlsx")
 SLE_Annotation=read.xlsx("SLE-genes-Annotation2.xlsx", sheetName="WhichGeneWhichCluster", header=TRUE)
 Orange=SLE_Annotation[which(SLE_Annotation[,"ORANGE"]=="y"),"All.Genes"]
@@ -68,6 +70,18 @@ SLE_Johnson$enrichment[[8]]=GOenrichment(Green,colnames(SLE_Johnson$classifier)[
 x=as.data.frame(cbind(SLE_Johnson$enrichment[[8]]$result$term_id,SLE_Johnson$enrichment[[8]]$result$term_name,SLE_Johnson$enrichment[[8]]$result$term_size,SLE_Johnson$enrichment[[8]]$result$p_value,SLE_Johnson$enrichment[[8]]$result$intersection))
 colnames(x)<-c("term_id","term_name","term_size","intersection")
 write.xlsx(x,"EnrichedTerms.xlsx", sheetName="Green",append = TRUE)
+
+SLE_Johnson$enrichment[[3]]=GOenrichment(DA3Genes,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+#Orange
+SLE_Johnson$enrichment[[4]]=GOenrichment(Orange,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+#Blue
+SLE_Johnson$enrichment[[5]]=GOenrichment(Blue,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+#Red
+SLE_Johnson$enrichment[[6]]=GOenrichment(Red,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+#Purple
+SLE_Johnson$enrichment[[7]]=GOenrichment(Purple,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
+#Green
+SLE_Johnson$enrichment[[8]]=GOenrichment(Green,colnames(SLE_Johnson$classifier)[1:length(SLE_Johnson$classifier)-1],SLE_Johnson$keyType,SLE_Johnson$ontology)
 
 #gostplot(SLE_Johnson$enrichment[[1]], capped = TRUE, interactive = TRUE)
 #gostplot(SLE_Johnson$enrichment[[2]], capped = TRUE, interactive = TRUE)
