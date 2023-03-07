@@ -19,9 +19,72 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r phenotypes, echo=FALSE}
 #finalPlot=phenotypeComparisonCluster(clusters=clusters,indicesPhenotypesCategorical,phenotype,"red",TRUE,"orange")
+
+clustersForComparison=clusters$color_cluster
+clustersForComparison=as.data.frame(clustersForComparison)
+colnames(clustersForComparison)=c("color_values")
+rownames(clustersForComparison)=rownames(clusters)
+
 finalPlot=phenotypeComparisonCluster(clusters=clustersForComparison,indicesPhenotypes,phenotype,"red",TRUE,"orange")
 
-p1<-ggplot(data = finalPlot,aes(x = color_cluster, y = values,fill=color_cluster))+stat_boxplot( geom='errorbar', linetype=1,size =0.1, width=0.5,position = position_dodge(width=0.75))+theme_bw()+ geom_point(aes(y=values, group=color_cluster),alpha=1,size=0.2, position = position_dodge(width=0.75))
-p1<-p1+geom_boxplot(inherit.aes = TRUE,aes(fill=color_cluster),alpha=0.3,outlier.size=0,lwd=0.1,stat = "boxplot")+
-theme(axis.text=element_text(size=8),axis.title=element_text(size=8),legend.title=element_text(size=10),legend.text=element_text(size=9))+scale_fill_manual(values=c("red" = "#a30019ff","blue"="#3a5187ff","orange" = "#d2722eff", "green" = "#12664cff","purple"="#877194ff"))+theme(legend.title = element_blank())+labs(x = "")+labs(y = "Phenotype value")+facet_wrap(~ phenotype,scales = "free")
+finalPlot$color_cluster=as.character(finalPlot$color_cluster)
+finalPlot[finalPlot=="orange"]="C1"
+finalPlot[finalPlot=="red"]="C3"
+finalPlot[finalPlot=="purple"]="C2"
+finalPlot[finalPlot=="blue"]="C4"
+finalPlot[finalPlot=="green"]="C5"
+
+
+
+
+finalPlot$color_cluster=factor(finalPlot$color_cluster,levels = c("C1","C2","C3","C4","C5"))
+
+ 
+  p1<-ggplot(data = finalPlot,aes(x = color_cluster, y = values,fill=color_cluster))+stat_boxplot( geom='errorbar', linetype=1,size =0.1, width=0.5,position = position_dodge(width=0.75))+theme_bw()+ geom_point(aes(y=values, group=color_cluster),alpha=1,size=0.2, position = position_dodge(width=0.75))
+  p1<-p1+geom_boxplot(inherit.aes = TRUE,aes(fill=color_cluster),outlier.size=0,lwd=0.1,stat = "boxplot")+
+  theme(axis.text=element_text(size=8),axis.title=element_text(size=8),legend.title=element_text(size=10),legend.text=element_text(size=9))+scale_fill_manual(values=c("C3" = "#d2722eff","C5"="#3a5187ff","C1" = "#c63942ff", "C4" = "#12664cff","C2"="#877194ff"))+theme(legend.title = element_blank())+labs(x = "")+labs(y = "Phenotype value")+scale_x_discrete( limits=c("C1","C2","C3","C4","C5"))+stat_compare_means(
+   aes(group = color_cluster,label = paste0("p = ", ..p.format..)),size=3,vjust=1)+facet_wrap(~ phenotype,scales = "free")
+ # 
+
+
+finalPlot=phenotypeComparisonCluster(clusters=clustersForComparison,indicesPhenotypesCategorical,phenotype,"orange",FALSE,"orange")
+
+
+finalPlot$color_cluster=as.character(finalPlot$color_cluster)
+
+finalPlot[finalPlot=="purple"]="C2"
+
+
+
+
+
+finalPlot$color_cluster=factor(finalPlot$color_cluster,levels = c("C2","other"))
+
+#Purple significant
+finalPlot=finalPlot[which(finalPlot$phenotype %in% c("proteinuria","musculoskeletal","oral_steroids_category","neph_treat_lmm3")),]
+
+
+
+ p2<-ggplot(data = finalPlot, aes(x = color_cluster, y = values,fill=factor(color_cluster),colour = factor(color_cluster)))+theme(text = element_text(size=15)) +stat_sum(data = subset(finalPlot,color_cluster == 'C2'),aes(size = factor(..n..)), geom = "point",color="#877194ff") +
+   stat_sum(data = subset(finalPlot, color_cluster == 'other'),aes(size = factor(..n..)), geom = "point",color="black")+
+               scale_size_discrete(range = c(1, 10))+  
+    #This is how i sorted the x axis ticks according to what i need
+  scale_x_discrete( limits=c("C2","other"))+
+   labs(x="", y="")+theme(legend.position = "none")+facet_wrap(~ phenotype,scales = "free")
+
+#orange significant
+
+finalPlot=finalPlot[which(finalPlot$phenotype %in% "alopecia"),]
+
+finalPlot[finalPlot=="orange"]="C1"
+
+finalPlot$color_cluster=factor(finalPlot$color_cluster,levels = c("C1","other"))
+
+p2<-ggplot(data = finalPlot, aes(x = color_cluster, y = values,fill=factor(color_cluster),colour = factor(color_cluster)))+theme(text = element_text(size=15)) +stat_sum(data = subset(finalPlot,color_cluster == 'C1'),aes(size = factor(..n..)), geom = "point",color="#c63942ff") +stat_sum(data = subset(finalPlot, color_cluster == 'other'),aes(size = factor(..n..)), geom = "point",color="black")+scale_size_discrete(range = c(1, 10))+ 
+  #This is how i sorted the x axis ticks according to what i need
+  scale_x_discrete( limits=c("C1","other"))+
+ labs(x="", y="")+theme(legend.position = "none")+facet_wrap(~ phenotype,scales = "free")
+
+
+
 ```

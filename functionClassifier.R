@@ -26,9 +26,9 @@ Classifier <- setRefClass("Classifier",
                             {
                               Sys.sleep(4)
                               if(underSample==TRUE)
-                                Accuracies<<-compareAccuracies(classifier,200,as.character(MCFSFeatures),flagAccuracy,TRUE)
+                                Accuracies<<-compareAccuracies(classifier,10,200,as.character(MCFSFeatures),flagAccuracy,TRUE)
                               else
-                                Accuracies<<-compareAccuracies(classifier,200,as.character(MCFSFeatures),flagAccuracy,FALSE)
+                                Accuracies<<-compareAccuracies(classifier,10,200,as.character(MCFSFeatures),flagAccuracy,FALSE)
                               
                               
                             }
@@ -242,12 +242,15 @@ FilterFeatures=function(file,numberOfFeatures)
   return(list(features$attribute,features$RI_norm))
   
 }
-compareAccuracies=function(Decisiontable,limit,features,flag,underSample)
+compareAccuracies=function(Decisiontable,lower,limit,features,flag,underSample)
 {
   Accuracies=NULL
   resultRosetta=NULL
+  lower=10
+  limit=500
   
-  for(i in seq(10, limit, by = 10)){
+  #for(i in seq(lower, limit, by = 1)){
+  for(i in seq(lower, limit, by = 10)){
     print(i)
     
     # resultRosettaWithUSMod7=rosetta(DecisiontableBinary,classifier="StandardVoter",discrete=TRUE,underSample = TRUE)
@@ -261,10 +264,16 @@ compareAccuracies=function(Decisiontable,limit,features,flag,underSample)
     #print(features)
     if(flag =="Johnson")
     { if(underSample==TRUE)
-      resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter", discreteMethod="EqualFrequency",cvNum = 5,underSample=T,discreteParam=3)
-    else
-      resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter", discreteMethod="EqualFrequency",underSample=F,discreteParam=3)
-    
+    {
+      resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decisionSLE")],classifier="StandardVoter", discrete = TRUE,underSample=T,discreteParam=3,JohnsonParam =list(Modulo=TRUE, BRT=FALSE, BRTprec=0.9, Precompute=FALSE, Approximate=TRUE, Fraction=0.95, Algorithm="Simple"))
+      
+    }else{ #View(Decisiontable[,append(features[1:i],"decision")])
+      #print(features[1:i])
+      #resultRosetta=NULL
+      # Sys.sleep(10)
+      resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decisionSLE")],classifier="StandardVoter", discrete = TRUE,underSample=F,discreteParam=3,JohnsonParam =list(Modulo=TRUE, BRT=FALSE, BRTprec=0.9, Precompute=FALSE, Approximate=TRUE, Fraction=0.95, Algorithm="Simple"))
+      # Sys.sleep(10)
+    }
     } else if(flag =="Genetic")
     {
       #resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter",discrete=FALSE, discreteMethod="EqualFrequency",cvNum=5, discreteParam=3)
@@ -274,23 +283,76 @@ compareAccuracies=function(Decisiontable,limit,features,flag,underSample)
       #      View(Decisiontable[,append(features[1:i],"decision")])
       #      print(str(Decisiontable[,append(features[1:i],"decision")]))
       if(underSample==TRUE)
-        resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],cvNum = 5,reducer="Genetic",underSample=T,ruleFiltration=TRUE)
-      else{
-        resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],cvNum = 10,reducer="Genetic",underSample=F,ruleFiltration=TRUE)
+      {
+        resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decisionSLE")],reducer="Genetic",underSample=T,ruleFiltration=TRUE,GeneticParam = list(Modulo=TRUE, BRT=FALSE, BRTprec=0.9, Precompute=FALSE, Approximate=TRUE, Fraction=0.99, Algorithm="Simple"))
+        print("Hello")
+      }  else{
+        resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decisionSLE")],cvNum = 5,reducer="Genetic",underSample=F,ruleFiltration=TRUE,GeneticParam = list(Modulo=TRUE, BRT=FALSE, BRTprec=0.9, Precompute=FALSE, Approximate=TRUE, Fraction=0.99, Algorithm="Simple"))
         
       }
       
     }# print(resultRosetta)
     Accuracies=append(Accuracies,resultRosetta$quality$accuracyMean)
     resultRosetta=NULL
-    Sys.sleep(4)
+    #Sys.sleep(10)
     # print(Accuracies)
   }
   plot(Accuracies,type='l',xaxt="n",main="Accuracies")
-  axis(1,at=seq(1,as.numeric(limit/10), by = 1),labels=as.character(seq(10, limit, by = 10)))
+  #axis(1,at=seq(1,as.numeric(limit/10), by = 1),labels=as.character(seq(lower, limit, by = 1)))
+  # axis(1,at=seq(lower,as.numeric(limit), by = 10),labels=as.character(seq(lower, limit, by = 1)))
+  #axis(1,at=seq(1,as.numeric(limit/10), by = 1),labels=as.character(seq(10, limit, by = 10)))
   return(Accuracies)
   
 }
+# compareAccuracies=function(Decisiontable,limit,features,flag,underSample)
+# {
+#   Accuracies=NULL
+#   resultRosetta=NULL
+#   
+#   for(i in seq(10, limit, by = 10)){
+#     print(i)
+#     
+#     # resultRosettaWithUSMod7=rosetta(DecisiontableBinary,classifier="StandardVoter",discrete=TRUE,underSample = TRUE)
+#     #For SLE 
+#     #resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter",discreteMask=TRUE,discrete = TRUE,ruleFiltration=TRUE,ruleFiltrSupport=c(1,3))
+#     #FOR AML
+#     #Johnson
+#     # View(Decisiontable)
+#     #print(class(Decisiontable))
+#     #print(limit)
+#     #print(features)
+#     if(flag =="Johnson")
+#     { if(underSample==TRUE)
+#       resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter", discreteMethod="EqualFrequency",cvNum = 5,underSample=T,discreteParam=3)
+#     else
+#       resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter", discreteMethod="EqualFrequency",underSample=F,discreteParam=3)
+#     
+#     } else if(flag =="Genetic")
+#     {
+#       #resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],classifier="StandardVoter",discrete=FALSE, discreteMethod="EqualFrequency",cvNum=5, discreteParam=3)
+#       # print("hiii")
+#       #    print(str(Decisiontable[,append(features[1:i],"decision")]))
+#       #        #Genetic
+#       #      View(Decisiontable[,append(features[1:i],"decision")])
+#       #      print(str(Decisiontable[,append(features[1:i],"decision")]))
+#       if(underSample==TRUE)
+#         resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],cvNum = 5,reducer="Genetic",underSample=T,ruleFiltration=TRUE)
+#       else{
+#         resultRosetta=rosetta(Decisiontable[,append(features[1:i],"decision")],cvNum = 10,reducer="Genetic",underSample=F,ruleFiltration=TRUE)
+#         
+#       }
+#       
+#     }# print(resultRosetta)
+#     Accuracies=append(Accuracies,resultRosetta$quality$accuracyMean)
+#     resultRosetta=NULL
+#     Sys.sleep(4)
+#     # print(Accuracies)
+#   }
+#   plot(Accuracies,type='l',xaxt="n",main="Accuracies")
+#   axis(1,at=seq(1,as.numeric(limit/10), by = 1),labels=as.character(seq(10, limit, by = 10)))
+#   return(Accuracies)
+#   
+# }
 #For Gene expression Decision tables
 prepareDT=function(DT,values)
 {
@@ -482,8 +544,29 @@ plotDistribution$clusters=unique(clusters$color_cluster)
 plotDistribution$clusters=as.factor(plotDistribution$clusters)
 plotDistribution$distribution=paste(getmax(resultdistribution$dfplotall[3]),getmax(resultdistribution$dfplotall[6]),getmax(resultdistribution$dfplotall[9]),getmax(resultdistribution$dfplotall[12]),getmax(resultdistribution$dfplotall[15]))
 
-plotDistribution$distribution=as.numeric(unlist(str_split(plotDistribution$distribution," ")))
-ggplot(as.data.frame(plotDistribution), aes(x = clusters, y = distribution,fill = factor(clusters)))+geom_bar(stat = "identity")+scale_fill_manual("", values = c("red" = "#a30019ff","blue"="#3a5187ff","orange" = "#d2722eff", "green" = "#12664cff","purple"="#877194ff"))+
+tempPlotDistribution=as.data.frame(plotDistribution)
+tempPlotDistribution$clusters=as.character(tempPlotDistribution$clusters)
+tempPlotDistribution[tempPlotDistribution=="orange"]="C1"
+tempPlotDistribution[tempPlotDistribution=="red"]="C3"
+tempPlotDistribution[tempPlotDistribution=="purple"]="C2"
+tempPlotDistribution[tempPlotDistribution=="blue"]="C4"
+tempPlotDistribution[tempPlotDistribution=="green"]="C5"
+
+#temp C10  for swapping c4 with c5 and the other way around
+tempPlotDistribution[tempPlotDistribution=="C4"]="C10"
+tempPlotDistribution[tempPlotDistribution=="C5"]="C4"
+tempPlotDistribution[tempPlotDistribution=="C10"]="C5"
+
+
+#temp C10  for swapping c4 with c5 and the other way around
+tempPlotDistribution[tempPlotDistribution=="C3"]="C10"
+tempPlotDistribution[tempPlotDistribution=="C1"]="C3"
+tempPlotDistribution[tempPlotDistribution=="C10"]="C1"
+
+tempPlotDistribution$clusters=factor(tempPlotDistribution$clusters,levels = c("C1","C2","C3","C4","C5"))
+
+tempPlotDistribution$distribution=as.numeric(unlist(str_split(tempPlotDistribution$distribution," ")))
+ggplot(as.data.frame(tempPlotDistribution), aes(x = clusters, y = distribution,fill = factor(clusters)))+geom_bar(stat = "identity")+scale_fill_manual("", values =  c("C1" = "#c63942ff","C5"="#384f85ff","C3" = "#e88800ff", "C4" = "#116649ff","C2"="#856f95ff"))+
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),text = element_text(size=12),axis.line = element_line(colour = "grey"),panel.background = element_blank())+geom_hline(yintercept=0.25, linetype="dotted",size = 1)
 
@@ -530,7 +613,17 @@ dominant=dominant*100
 dominant$Clusters=Clustersdominant
 #trial=melt(DominanceTablePercentage, id.var = "Clusters")
 trial=melt(dominant, id.var = "Clusters")
-trial$Clusters=as.factor(trial$Clusters)
+#trial$Clusters=as.factor(trial$Clusters)
+
+trial[trial=="orange"]="C1"
+trial[trial=="red"]="C3"
+trial[trial=="purple"]="C2"
+trial[trial=="blue"]="C4"
+trial[trial=="green"]="C5"
+
+
+trial$Clusters=factor(trial$Clusters,levels = c("C1","C2","C3","C4","C5"))
+#trial$Clusters=factor(trial$Clusters,levels = c("orange","purple","red","green","blue"))
 
 p1<-ggplot(trial, aes(x = variable, y = value ,fill = factor(Clusters))) + 
   geom_bar(position = "fill",stat = "identity") +
@@ -538,7 +631,7 @@ p1<-ggplot(trial, aes(x = variable, y = value ,fill = factor(Clusters))) +
   # geom_bar(position = position_fill(), stat = "identity") 
   scale_y_continuous(labels = scales::percent_format())+coord_flip()+guides(fill=guide_legend(title=""))+
  # scale_fill_manual("", values = c("red" = "#661100","blue"="#0072B2","orange" = "#D55E00", "green" = "#117733","purple"="#CC79A7"))+xlab("")+ylab("")
- scale_fill_manual("legend", values = c("red" = "#a30019ff","blue"="#3a5187ff","orange" = "#d2722eff", "green" = "#12664cff","purple"="#877194ff"))+xlab("")+ylab("")
+ scale_fill_manual("legend", values = c("C1" = "#c63942ff","C5"="#384f85ff","C3" = "#e88800ff", "C4" = "#116649ff","C2"="#856f95ff"))+xlab("")+ylab("")
 
 
 dominantCategorical=read_excel("October2020SLE/ComparisonsRules/dominantBinary.xlsx",sheet = "dominanceCategorical")
@@ -552,15 +645,27 @@ dominantCategorical=dominantCategorical*100
 dominantCategorical$Clusters=Clustersdominant
 #trial=melt(DominanceTablePercentage, id.var = "Clusters")
 trial=melt(dominantCategorical, id.var = "Clusters")
-trial$Clusters=as.factor(trial$Clusters)
+
+
+trial[trial=="orange"]="C1"
+trial[trial=="red"]="C3"
+trial[trial=="purple"]="C2"
+trial[trial=="blue"]="C4"
+trial[trial=="green"]="C5"
+
+
+
+
+trial$Clusters=factor(trial$Clusters,levels = c("C1","C2","C3","C4","C5"))
+#trial$Clusters=as.factor(trial$Clusters)
 p2<-ggplot(trial, aes(x = variable, y = value ,fill = factor(Clusters))) + 
   geom_bar(position = "fill",stat = "identity") +
   # or:
   # geom_bar(position = position_fill(), stat = "identity") 
   scale_y_continuous(labels = scales::percent_format())+coord_flip()+guides(fill=guide_legend(title=""))+
  # scale_fill_manual("", values = c("red" = "#661100","blue"="#0072B2","orange" = "#D55E00", "green" = "#117733","purple"="#CC79A7"))+xlab("")+ylab("")
-  scale_fill_manual("legend", values = c("red" = "#a30019ff","blue"="#3a5187ff","orange" = "#d2722eff", "green" = "#12664cff","purple"="#877194ff"))+xlab("")+ylab("")
-cowplot::plot_grid(p1, p2,labels = "AUTO")
+  scale_fill_manual("legend", values =  c("C1" = "#c63942ff","C5"="#384f85ff","C3" = "#e88800ff", "C4" = "#116649ff","C2"="#856f95ff"))+xlab("")+ylab("")
+cowplot::plot_grid(p1, p2,labels = c("a","b"))
   #trial$value=trial$value*100
 colnames(trial)<-c("clusters","classtype","value")
 ggplot(data=trial, aes(x=value,y=classtype,fill=factor(clusters))) +
@@ -1517,6 +1622,7 @@ phenotypeComparisonCluster<-function(clusters,indices,phenotypeTable,ClusterColo
         
         colnames(tempClusters)<-c("color_cluster","values","phenotype")
         tempClusters$values=as.numeric(tempClusters$values)
+        tempClusters$color_cluster=factor(tempClusters$color_cluster, levels = c("red","blue","green","orange","purple"))
       FinalPlot=rbind.data.frame(FinalPlot,tempClusters)
       p1<-ggplot(data = tempClusters,aes(x = color_cluster, y = values,fill=color_cluster))+stat_boxplot( geom='errorbar', linetype=1,size =0.1, width=0.5,position = position_dodge(width=0.75))+theme_bw()+ geom_point(aes(y=values, group=color_cluster),alpha=1,size=0.2, position = position_dodge(width=0.75))
       p1<-p1+geom_boxplot(inherit.aes = TRUE,aes(fill=color_cluster),alpha=0.3,outlier.size=0,lwd=0.1,stat = "boxplot")+
@@ -1564,12 +1670,16 @@ phenotypeComparisonCluster<-function(clusters,indices,phenotypeTable,ClusterColo
       
       
       tempClusters$values=phenotypeTable[which(rownames(phenotypeTable) %in% rownames(tempClusters)),namesIndices[[i]]]
-      tempClusters=tempClusters[,c("color_cluster","values")]
+      
+      
+    
      # print(tempClusters)
       
       colnames(tempClusters)<-c("color_cluster","values")
+      
+      tempClusters$values=as.factor(as.character(tempClusters$values))
     
-      #View(tempClusters)
+      View(tempClusters)
       #print("I want to check the data type of values")
       #print(class(tempClusters$values))
     #  tempClusters$values=as.numeric(tempClusters$values)
@@ -1593,7 +1703,12 @@ phenotypeComparisonCluster<-function(clusters,indices,phenotypeTable,ClusterColo
         paste("There are too many different classes and levels to perform fisher's exact test")
       # result=chisq.test(table(tempClusters))
       #  print(result)
-      balloonplot(table(tempClusters), main =namesIndices[[i]], xlab ="", ylab="",
+      tempClusters$phenotype=as.character(rep(as.character(namesIndices[i]),length(tempClusters$values)))
+      colnames(tempClusters)<-c("color_cluster","values","phenotype")
+      tempClusters=as.data.frame(tempClusters)
+      
+      FinalPlot=rbind.data.frame(FinalPlot,tempClusters)
+     p2<- balloonplot(table(tempClusters), main =namesIndices[[i]], xlab ="", ylab="",
                   label = FALSE, show.margins = FALSE)
       # pvalues[,which(colnames(pvalues)==as.character(ruleNumber))]=result$p.value
       #p=result$p.value
@@ -1892,6 +2007,10 @@ d2 <- dotplot(bpgreen, showCategory=30) + ggtitle("Green")
 d3 <- dotplot(bpblue, showCategory=30) + ggtitle("Blue")
 d5 <- dotplot(bporange, showCategory=30) + ggtitle("Orange")
 cowplot::plot_grid(d1, d2, d3, d5,labels = "AUTO")
+cowplot::plot_grid(d1, d2,labels = c("a","b"))
+cowplot::plot_grid(d3, d5,labels = c("c","d"))
+
+
 dDA1<-dotplot(bpD1, showCategory=30) + ggtitle("DA1")
 dDA3<-dotplot(bpD3, showCategory=30) + ggtitle("DA3")
 dDA13<-dotplot(bpDA13, showCategory=30) + ggtitle("DA13")

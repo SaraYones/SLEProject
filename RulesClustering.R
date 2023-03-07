@@ -85,6 +85,7 @@ heatmap.F = function(dataM,
   # Clustering method
   fh = function(x){return(stats::hclust(x,method=clustermethod))}
   
+ 
   # Rowside colors
   
   if(cutoffmethod=='depth'){fc = function(M){return(cutreeHybrid(dendro=fh(fd(M)), distM=as.matrix(fd(M)), deepSplit=cutoff, verbose=0, minClusterSize=1)$labels)}}
@@ -93,21 +94,23 @@ heatmap.F = function(dataM,
   if(cutoffmethod=='none'){fc = function(M){return(rep(1, nrow(M)))}}
   
   if(dendrogram%in%c('none','column')){rowcol=rep('grey70', nrow(dataM))} else {
-   # rowcol = c('blue', 'red', 'orange', 'skyblue', 'yellow', 'black', 'darkblue', 'cyan', 'darkred', 'darkgreen', 'pink', 'purple', 'gray10')[suppressWarnings(fc(dataM))]
-    rowcol = c('#a30019ff', '#3a5187ff', '#12664cff',  '#877194ff', '#d2722eff')[suppressWarnings(fc(dataM))]
-    
+  #  rowcol = c('blue', 'red', 'orange', 'skyblue', 'yellow', 'black', 'darkblue', 'cyan', 'darkred', 'darkgreen', 'pink', 'purple', 'gray10')[suppressWarnings(fc(dataM))]
+   # rowcol = c('#d2722eff','#12664cff', '#3a5187ff' ,  '#877194ff', '#c63942ff')[suppressWarnings(fc(dataM))]
+    rowcol = c('blue','red', 'orange' ,  'green', 'purple')[suppressWarnings(fc(dataM))]
         if(length(rowcol)!=nrow(dataM)){rowcol=rep("gray", nrow(dataM))}
   }
   
+   colnames(dataM) = rep("",ncol(dataM))
   hm = heatmap.2(dataM,
-                 col=color.vector,
-                 hclustfun=fh,
+             #    col=color.vector,
+             col = c("grey","black"),
+                hclustfun=fh,
                  distfun=fd,
                  trace='none',
-                 labRow = FALSE,
-                 ylab = "Visits",
-                 xlab="Rules",
-                 Colv=Colv,
+                 labRow = rownames(dataM),
+                # ylab = "Visits",
+                # xlab="Rules",
+                Colv=Colv,
                  dendrogram=dendrogram,
                  RowSideColors=rowcol,
                  symbreaks=T, main=main,cexRow=0.6,

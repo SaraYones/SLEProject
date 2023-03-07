@@ -48,7 +48,7 @@ exploreSamples(list(as.data.frame(logDA12Patients),as.data.frame(logDA13Patients
 table(discretize(as.numeric(metadata12[,"age:"]), breaks = 3))
 #-----------------Plotting-------------------------------------
 #----------Samples with batch-----------------------------------------------------------------------------------------------------
-filepath=paste('/Users/sarayones/Desktop/Projects/SLEProject/plots/')
+filepath=paste('/Users/saryo614/Desktop/Projects/SLEProject/plots/')
 plotPCAmeta(list(as.data.frame(logDA12Patients),as.data.frame(logDA13Patients),as.data.frame(logDA23Patients)),list(as.data.frame(metadata12),as.data.frame(metadata13),as.data.frame(metadata23)),"batch:",filepath)
 plotPCAmeta(list(as.data.frame(logDA12Patients),as.data.frame(logDA13Patients),as.data.frame(logDA23Patients)),list(as.data.frame(metadata12),as.data.frame(metadata13),as.data.frame(metadata23)),"gender:",filepath)
 plotPCAmeta(list(as.data.frame(logDA12Patients),as.data.frame(logDA13Patients),as.data.frame(logDA23Patients)),list(as.data.frame(metadata12),as.data.frame(metadata13),as.data.frame(metadata23)),"age:",filepath,"cluster")
@@ -116,6 +116,8 @@ write.table(logDA12PatientWithoutBatch, file ="DA12.csv",row.names = TRUE)
 write.csv(logDA13PatientWithoutBatch, file ="DA13.csv")
 write.table(logDA23PatientWithoutBatch, file ="DA23.csv",row.names = TRUE)
 
+form <- ~ visit + visitCount + cumulativeTime + daysSinceDiagnosis + daysSinceLastVisit +(1|treatment)+ (1|gender) + (1|race) + age + (1|biopsyHistory)
+checkVariableEffects(list(as.data.frame(logDA13PatientWithoutBatch)),list(as.data.frame(metadata13)),form,filepath,"variableEffects")
 
 
 

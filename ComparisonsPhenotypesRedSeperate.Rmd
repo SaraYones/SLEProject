@@ -1,0 +1,44 @@
+---
+title: "Comparisons phenotype Categorical"
+author: "SaraYones"
+date: "7/5/2020"
+output: html_document
+---
+
+<!-- ```{r setup, include=FALSE} -->
+<!-- knitr::opts_chunk$set(echo = TRUE) -->
+<!-- ``` -->
+<!-- ```{r phenotypes, echo=FALSE} -->
+<!-- phenotypeComparisonCluster(clusters=clusters,indicesPhenotypes,phenotype,"red",TRUE) -->
+<!-- ``` -->
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r phenotypes, echo=FALSE}
+#finalPlot=phenotypeComparisonCluster(clusters=clusters,indicesPhenotypesCategorical,phenotype,"red",TRUE,"orange")
+
+clustersForComparison=clusters$color_cluster
+clustersForComparison=as.data.frame(clustersForComparison)
+colnames(clustersForComparison)=c("color_values")
+rownames(clustersForComparison)=rownames(clusters)
+
+finalPlot=phenotypeComparisonCluster(clusters=clustersForComparison,indicesPhenotypes,phenotype,"red",TRUE,"orange")
+
+p1<-ggplot(data = finalPlot,aes(x = color_cluster, y = values,fill=color_cluster))+stat_boxplot( geom='errorbar', linetype=1,size =0.1, width=0.5,position = position_dodge(width=0.75))+theme_bw()+ geom_point(aes(y=values, group=color_cluster),alpha=1,size=0.2, position = position_dodge(width=0.75))
+p1<-p1+geom_boxplot(inherit.aes = TRUE,aes(fill=color_cluster),outlier.size=0,lwd=0.1,stat = "boxplot")+
+theme(axis.text=element_text(size=8),axis.title=element_text(size=8),legend.title=element_text(size=10),legend.text=element_text(size=9))+scale_fill_manual(values=c("red" = "#a30019ff","blue"="#3a5187ff","orange" = "#d2722eff", "green" = "#12664cff","purple"="#877194ff"))+theme(legend.title = element_blank())+labs(x = "")+labs(y = "Phenotype value")+stat_compare_means(
+ aes(group = color_cluster,label = paste0("p = ", ..p.format..)),size=3,vjust=1)+facet_wrap(~ phenotype,scales = "free")
+
+
+
+finalPlot=phenotypeComparisonCluster(clusters=clustersForComparison,indicesPhenotypesCategorical,phenotype,"red",FALSE,"red")
+p2<-ggplot(data = finalPlot, aes(x = color_cluster, y = values,fill=factor(color_cluster),colour = factor(color_cluster))) +stat_sum(data = subset(finalPlot,color_cluster == 'red'),aes(size = factor(..n..)), geom = "point",color="#a30019ff") +
+  stat_sum(data = subset(finalPlot, color_cluster == 'other'),aes(size = factor(..n..)), geom = "point",color="black")+
+               scale_size_discrete(range = c(1, 10))+  labs(x="", y="")+theme(legend.position = "none")+facet_wrap(~ phenotype,scales = "free")
+
+
+
+```

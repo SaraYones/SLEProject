@@ -46,7 +46,7 @@ rownames(df) =colnames(clusteredRules)
 
 #build heat map 
 rule_cluster=heatmap.F(t(clusteredRules),
-                       colors = c("black","skyblue"), 
+                       colors = c("white","white","white","black"), 
                        cutoffmethod = "number",
                        cutoff = 5,
                        distmethod='binary')

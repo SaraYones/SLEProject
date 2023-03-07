@@ -32,7 +32,7 @@ options(numericAsFactors=FALSE)
 library(performance)
 
 #For oversampling 
-install.packages("ROSE")
+#install.packages("ROSE")
 library(ROSE)
 
 
@@ -44,6 +44,7 @@ library(easyGgplot2)
 
 #for permutation test
 library(permute)
+library(stringr)
 
 #--------------------------------Discretizations-----------------------------------------
 #Here we want to extract 1 healthy individual per each technical replicate
@@ -93,7 +94,7 @@ DescretizedDF13$decisionSLE=as.character(DescretizedDF13$decisionSLE)
 #resultRosetta13=rosetta(DescretizedDF13[,append(borutaFeatures13,"decisionSLE")],classifier="StandardVoter",)
 rownames(DescretizedDF13)<-rownames(logDA13PatientWithoutBatch)
 
-temp=prepareDT(DescretizedDF13[,append(borutaFeatures13[1:40],"decisionSLE")],c(1,2,3))
+tempfoundation=prepareDT(DescretizedDF13[,append(borutaFeatures13[1:40],"decisionSLE")],c(1,2,3))
 
 SLEclassifier=fread("DA13.csv") 
 SLEclassifier=as.data.frame(SLEclassifier)
@@ -101,20 +102,54 @@ row.names(SLEclassifier) <- SLEclassifier$V1
 SLEclassifier=SLEclassifier[,2:dim(SLEclassifier)[2]]
 
 
-SLE_Johnson<- Classifier(classifier = SLEclassifier,flagAccuracy="Johnson",path="/newRun",
-                                          MCFSFeatures=FilterFeatures("out_remove1/output13_remove1_RI.csv",1000)[[1]],
+SLE_Johnson<- Classifier(classifier = dt_40_remove1,flagAccuracy="Johnson",path="/newRun",
+                                          MCFSFeatures=FilterFeatures("/Users/hp/Desktop/out_remove1/output13_remove1_RI.csv",1000)[[1]],
                                           
                          ontology="BP",numberOfFeatures=34,keyType="SYMBOL",underSample=FALSE)
 
-SLE_Johnson$computeEnrichment()
-resultRosetta13=rosetta(temp,classifier="StandardVoter",discrete = TRUE)
 
+SLE_Johnson<- Classifier(classifier = discDA13_remove1,flagAccuracy="Johnson",path="/newRun",
+                         MCFSFeatures=FilterFeatures("/Users/hp/Desktop/out_remove1/output13_remove1_RI.csv",1000),
+                         
+                         ontology="BP",numberOfFeatures=40,keyType="SYMBOL",underSample=FALSE)
+
+
+#For computing the Feature boosting step
+temporaryTable <- data.frame(lapply(discDA13_remove1,as.character), stringsAsFactors=FALSE)
+
+SLE_Johnson<- Classifier(classifier = temporaryTable,flagAccuracy="Johnson",path="/newRun",
+                         MCFSFeatures=FilterFeatures("out_remove1/output13_remove1_RI.csv",1000),
+                         
+                         ontology="BP",numberOfFeatures=40,keyType="SYMBOL",underSample=FALSE)
+
+x=as.character(seq(10, 500, by = 10))
+
+
+figure=cbind(x,SLE_Johnson$Accuracies)
+figure=as.data.frame(figure)
+colnames(figure)=c("x","Accuracies")
+figure$x=as.numeric(x)
+figure$Accuracies=as.numeric(SLE_Johnson$Accuracies)
+
+ggplot(figure, aes(x=x, y = Accuracies)) + geom_line()+theme_classic() +xlab("Features count")+ylab("Accuracies")+geom_vline(xintercept=c(50,60), linetype="dotted")
+
+
+
+
+SLE_Johnson$computeEnrichment()
+#resultRosetta13=rosetta(tempfoundation,classifier="StandardVoter",discrete = TRUE)
+resultRosetta13_foundation=rosetta(tempfoundation,classifier="StandardVoter",discrete = TRUE)
 #temp=as.matrix(temp)
 #temp=apply(as.matrix(temp),1,function(x) lapply(x,function(y) print(y)))
 #temp$decisionSLE=as.factor(temp$decisionSLE)
-recalculatedResultRosetta13=recalculateRules(temp,resultRosetta13$main,discrete = TRUE)
+
+#recalculatedResultRosetta13=recalculateRules(temp,resultRosetta13$main,discrete = TRUE)
+recalculatedResultRosetta13_foundation=recalculateRules(tempfoundation,resultRosetta13_foundation$main,discrete = TRUE)
 #Filter according to pval of the rules
-recalculatedResultRosetta13=recalculatedResultRosetta13[which(recalculatedResultRosetta13$PVAL<=0.08),]
+
+filt_foundation<- resultRosetta13_foundation$main[which(resultRosetta13_foundation$main$pValue <= 0.05),]
+vis_out_foundation<- visunet(filt, type = "RDF")
+#recalculatedResultRosetta13_foundation=recalculatedResultRosetta13_foundation[which(recalculatedResultRosetta13$PVAL<=0.08),]
 
 ruleHeatmap(temp, recalculatedResultRosetta13, discrete =TRUE,ind=1)
 

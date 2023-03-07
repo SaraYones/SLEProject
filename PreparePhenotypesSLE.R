@@ -107,7 +107,7 @@ indexnsaid_category=which(phenotype$nsaid_category!="Data Not Available")
 indexasa_category=which(phenotype$asa_category!="Data Not Available")
 indexmdg=which(phenotype$mdg!="Data Not Available"& phenotype$mdg!="N/A")
 indexmdg=which(phenotype$mdg!="Data Not Available"& phenotype$mdg!="N/A")
-indextreatment=which(phenotype$neph_treat_lmm3!=" Data Not Available"& phenotype$mdg!=" Not Applicable")
+indextreatment=which(phenotype$neph_treat_lmm3!=" Data Not Available"& phenotype$neph_treat_lmm3!=" Not Applicable")
 indexcommon=c(1:dim(phenotype)[1])
 
 indicesPhenotypes=NULL
@@ -178,6 +178,9 @@ names(indicesPhenotypesCategorical)<-c("hematuria",
                                        "vasculitis",
                                        "arthritis",
                                        "myositis",
-                                       "urinary_casts","gender","race","neph_treat_lmm3")
+                                       "urinary_casts",
+                                       "gender",
+                                       "race",
+                                       "neph_treat_lmm3")
 
 
